@@ -1,1 +1,35 @@
 # DyBackend
+
+## 1. 技术选型
+
+| 框架名   | 用途   | 文档 |
+|--------- |--------|----- |
+|Kitex| 微服务框架| https://www.cloudwego.io/zh/docs/kitex/getting-started/| 
+|hertz|web框架|https://github.com/cloudwego/hertz/blob/develop/README_cn.md |
+|gin|web框架|https://gin-gonic.com/zh-cn/docs/|
+|gorm|ORM框架|https://gorm.io/zh_CN/docs/index.html|
+|go-redis|中间件|https://redis.uptrace.dev/|
+|Mysql|数据库||
+|Redis|缓存|https://www.redis.com.cn/documentation.html|
+|MinIO|高性能对象存储|http://docs.minio.org.cn/docs/|
+|etcd|服务发现|https://doczhcn.gitbook.io/etcd/index|
+|docker-compose|部署|https://yeasy.gitbook.io/docker_practice/compose/compose_file|
+
+
+
+## 2. 开发规范
+
+### 2.1 git 
+
+使用rebase进行分支合并，[文档](https://git-scm.com/book/zh/v2/Git-%E5%88%86%E6%94%AF-%E5%8F%98%E5%9F%BA)
+### 2.2 变量命名规范
+- 私有变量和临时变量一律使用小驼峰式命名法，形如"homeController"，公有变量一律使用大驼峰式命名法，形如："UseControllers"
+- 常量使用全大写，不同单词之间用_分开(大写帕斯卡式命名法)
+- 常见缩写保证大小写一致，比如SQL，URL，别出现Sql，Url这种写法
+### 2.3 API规范
+[规范接口](https://www.apifox.cn/apidoc/shared-09d88f32-0b6c-4157-9d07-a36d32d7a75c/api-50707523)
+### 2.4 文件/包命名规范
+- 包名一律使用小写单数形式
+- 包名尽可能简短
+- go文件使用帕斯卡式命名法
+
