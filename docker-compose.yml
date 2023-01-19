@@ -1,0 +1,86 @@
+version: "3"
+services:
+  minio:
+#    The x86 version
+#    image: bitnami/minio:latest
+    image: nextsux/minio-arm
+    container_name: minio
+    expose:
+      - "9000"
+    ports:
+      - "29000:9000"
+    restart: always
+    environment:
+      # 在变量中配置账号密码
+      MINIO_ACCESS_KEY: "minio"
+      MINIO_SECRET_KEY: "12345678"
+    volumes:
+      - ./data:/data
+    command: server /data
+
+# portainer-ce 进行容器管理，需要时取消注释
+#  monitor:
+#    container_name: monitor
+#    image: portainer/portainer-ce:latest
+#    ports:
+#      - "28000:8000"
+#      - "28002:9000"
+#    volumes:
+#      - ./data:/data
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    restart: always
+
+  db:
+    image: mysql
+    container_name: db
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "23306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+
+# 数据库管理工具
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "28080:8080"
+
+# redis 缓存
+  cache:
+    image: redis:7.0.8
+    container_name: cache
+    volumes:
+      - ./config/redis:/usr/local/etc/redis
+      - ./log/redis:/log
+#    command:
+#      - redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - "26379:6379"
+
+  etcd:
+    image: pachyderm/etcd:v3.5.0-alpha.0
+    container_name: etcd1       # 容器名 --name
+    restart: always             # 总是重启
+    ports:                      # 端口映射 -p
+      - "22379:2379"
+      - "22380:2380"
+    environment:                # 环境变量 --env
+      - ALLOW_NONE_AUTHENTICATION=yes                       # 允许不用密码登录
+      - ETCD_UNSUPPORTED_ARCH=arm64                         # 系统架构
+      - ETCD_NAME=etcd1                                     # etcd 的名字
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd1:2380  # 列出这个成员的伙伴 URL 以便通告给集群的其他成员
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380           # 用于监听伙伴通讯的URL列表
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379         # 用于监听客户端通讯的URL列表
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd1:2379        # 列出这个成员的客户端URL，通告给集群中的其他成员
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster             # 在启动期间用于 etcd 集群的初始化集群记号
+      - ETCD_INITIAL_CLUSTER=etcd1=http://etcd1:2380,etcd2=http://etcd2:2380        # 为启动初始化集群配置
+      - ETCD_INITIAL_CLUSTER_STATE=new                      # 初始化集群状态
+      - ETCDCTL_API=3                                       # 升级api版本，使用最新的v3 API
+    volumes:
+      - ./data/etcd:/etcd-data                       # 挂载的数据卷
+      - /etc/localtime:/etc/localtime
+

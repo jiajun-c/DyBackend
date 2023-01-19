@@ -2,18 +2,18 @@
 
 ## 1. 技术选型
 
-| 框架名   | 用途   | 文档 |
-|--------- |--------|----- |
-|Kitex| 微服务框架| https://www.cloudwego.io/zh/docs/kitex/getting-started/| 
-|hertz|web框架|https://github.com/cloudwego/hertz/blob/develop/README_cn.md |
-|gin|web框架|https://gin-gonic.com/zh-cn/docs/|
-|gorm|ORM框架|https://gorm.io/zh_CN/docs/index.html|
-|go-redis|中间件|https://redis.uptrace.dev/|
-|Mysql|数据库||
-|Redis|缓存|https://www.redis.com.cn/documentation.html|
-|MinIO|高性能对象存储|http://docs.minio.org.cn/docs/|
-|etcd|服务发现|https://doczhcn.gitbook.io/etcd/index|
-|docker-compose|部署|https://yeasy.gitbook.io/docker_practice/compose/compose_file|
+| 框架名            | 用途      | 文档                                                            |
+|----------------|---------|---------------------------------------------------------------|
+| Kitex          | 微服务框架   | https://www.cloudwego.io/zh/docs/kitex/getting-started/       | 
+| hertz          | web框架   | https://github.com/cloudwego/hertz/blob/develop/README_cn.md  |
+| gin            | web框架   | https://gin-gonic.com/zh-cn/docs/                             |
+| gorm           | ORM框架   | https://gorm.io/zh_CN/docs/index.html                         |
+| go-redis       | 中间件     | https://redis.uptrace.dev/                                    |
+| Mysql          | 数据库     ||
+| Redis          | 缓存      | https://www.redis.com.cn/documentation.html                   |
+| MinIO          | 高性能对象存储 | http://docs.minio.org.cn/docs/                                |
+| etcd           | 服务发现    | https://doczhcn.gitbook.io/etcd/index                         |
+| docker-compose | 部署      | https://yeasy.gitbook.io/docker_practice/compose/compose_file |
 
 
 
