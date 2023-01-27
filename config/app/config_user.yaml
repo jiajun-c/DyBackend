@@ -1,0 +1,6 @@
+test: test
+
+db:
+  port: 23306
+  addr: localhost
+  database: tiktok

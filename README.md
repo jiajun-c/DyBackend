@@ -19,7 +19,7 @@
 
 ## 2. 开发规范
 
-### 2.1 git 
+### 2.1 git
 
 使用rebase进行分支合并，[文档](https://git-scm.com/book/zh/v2/Git-%E5%88%86%E6%94%AF-%E5%8F%98%E5%9F%BA)
 ### 2.2 变量命名规范
@@ -33,3 +33,27 @@
 - 包名尽可能简短
 - go文件使用帕斯卡式命名法
 
+## 3. 项目架构
+
+```text
+.
+├── cmd // 微服务分层
+│   ├── user
+│   └── video
+├── config  // 配置文件
+│   ├── app // 我们每个微服务的配置文件
+│   └── redis
+├── data    // docker-compose目录映射用的
+│   └── etcd  
+├── docker-compose.yml
+├── go.mod
+├── go.sum
+├── idl    // idl文件位置
+│   └── user.proto
+├── internal // 内部包
+│   └── config
+├── log      // 日志信息
+│   └── redis
+├── middleware  // 项目中间件
+└── README.md
+```

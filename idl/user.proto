@@ -1,0 +1,32 @@
+syntax = "proto3";
+package user;
+option go_package = "user_part";
+
+message user_login_request {
+  string username = 1;
+  string password = 2;
+}
+
+message user_login_response {
+  int32 status_code = 1;
+  string status_msg = 2;
+  int64 user_id = 3;
+  string token = 4;
+}
+
+message user_register_request {
+  string username = 1;
+  string password = 2;
+}
+
+message user_register_response {
+  int32 status_code = 1;
+  string status_msg = 2;
+  int32 user_id = 3;
+  string token = 4;
+}
+
+service UserService {
+  rpc UserRegister(user_register_request) returns (user_register_response) {}
+  rpc UserLogin(user_login_request) returns (user_login_response) {}
+}
