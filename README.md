@@ -57,3 +57,19 @@
 ├── middleware  // 项目中间件
 └── README.md
 ```
+
+## 4. 运行项目
+### 1.环境
+暂时只依赖mysql
+```shell
+docker-compose up db -d
+```
+### 2. 微服务
+
+```shell
+cd cmd/user
+sh build.sh
+sh output/bootstrap.sh
+```
+
+
