@@ -5,7 +5,7 @@ import "github.com/spf13/viper"
 func Init(filename string) {
 	viper.SetConfigName(filename)
 
-	viper.AddConfigPath("../../config/app/")
+	viper.AddConfigPath("/home/archhh/work/DyBackend/config/app")
 
 	viper.SetConfigType("yaml")
 

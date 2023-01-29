@@ -57,15 +57,18 @@
 ├── middleware  // 项目中间件
 └── README.md
 ```
+### 3.1 微服务内部分层
+- dal层：进行数据库的基础操作
+- rpc层：进行rpc调用
+- service层：业务层，编写业务逻辑
 
 ## 4. 运行项目
 ### 1.环境
 暂时只依赖mysql
-```shell
-docker-compose up db -d
-```
-### 2. 微服务
 
+数据库存放在云服务器上，配置文件中已经写出
+
+### 2. 微服务
 ```shell
 cd cmd/user
 sh build.sh

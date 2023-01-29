@@ -4,11 +4,11 @@ package userservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	user_part "tiktok/cmd/user/kitex_gen/user_part"
+	userpart "tiktok/cmd/user/kitex_gen/userpart"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.
-func NewInvoker(handler user_part.UserService, opts ...server.Option) server.Invoker {
+func NewInvoker(handler userpart.UserService, opts ...server.Option) server.Invoker {
 	var options []server.Option
 
 	options = append(options, opts...)

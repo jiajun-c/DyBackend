@@ -2,5 +2,5 @@ test: test
 
 db:
   port: 23306
-  addr: localhost
+  addr: 47.92.171.253
   database: tiktok

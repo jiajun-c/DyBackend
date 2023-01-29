@@ -6,13 +6,13 @@ import (
 	"context"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	user_part "tiktok/cmd/user/kitex_gen/user_part"
+	userpart "tiktok/cmd/user/kitex_gen/userpart"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	UserRegister(ctx context.Context, Req *user_part.UserRegisterRequest, callOptions ...callopt.Option) (r *user_part.UserRegisterResponse, err error)
-	UserLogin(ctx context.Context, Req *user_part.UserLoginRequest, callOptions ...callopt.Option) (r *user_part.UserLoginResponse, err error)
+	UserRegister(ctx context.Context, Req *userpart.UserRegisterRequest, callOptions ...callopt.Option) (r *userpart.UserLoginResponse, err error)
+	UserLogin(ctx context.Context, Req *userpart.UserLoginRequest, callOptions ...callopt.Option) (r *userpart.UserLoginResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -44,12 +44,12 @@ type kUserServiceClient struct {
 	*kClient
 }
 
-func (p *kUserServiceClient) UserRegister(ctx context.Context, Req *user_part.UserRegisterRequest, callOptions ...callopt.Option) (r *user_part.UserRegisterResponse, err error) {
+func (p *kUserServiceClient) UserRegister(ctx context.Context, Req *userpart.UserRegisterRequest, callOptions ...callopt.Option) (r *userpart.UserLoginResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UserRegister(ctx, Req)
 }
 
-func (p *kUserServiceClient) UserLogin(ctx context.Context, Req *user_part.UserLoginRequest, callOptions ...callopt.Option) (r *user_part.UserLoginResponse, err error) {
+func (p *kUserServiceClient) UserLogin(ctx context.Context, Req *userpart.UserLoginRequest, callOptions ...callopt.Option) (r *userpart.UserLoginResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UserLogin(ctx, Req)
 }

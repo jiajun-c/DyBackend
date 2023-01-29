@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/cloudwego/fastpb v0.0.3
 	github.com/cloudwego/kitex v0.4.4
+	github.com/kitex-contrib/tracer-opentracing v0.0.3
 	github.com/spf13/viper v1.15.0
 	google.golang.org/protobuf v1.28.1
 	gorm.io/driver/mysql v1.4.5
@@ -33,6 +34,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/oleiade/lane v1.0.1 // indirect
+	github.com/opentracing/opentracing-go v1.2.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
