@@ -22,6 +22,13 @@ func CreateUser(ctx context.Context, users []*User) error {
 	return DB.WithContext(ctx).Create(users).Error
 }
 
+// CheckUser
+//
+//	@Description: 检查用户是否存在
+//	@param ctx	上下文
+//	@param username	用户名
+//	@param password	密码
+//	@return bool true存在，false不存在
 func CheckUser(ctx context.Context, username string, password string) bool {
 	return DB.WithContext(ctx).Where("name = ? and password = ?", username, password).Error == nil
 }

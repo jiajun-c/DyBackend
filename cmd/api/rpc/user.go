@@ -2,40 +2,29 @@ package rpc
 
 import (
 	"context"
-	"github.com/cloudwego/kitex/client"
-	"github.com/cloudwego/kitex/pkg/retry"
-	trace "github.com/kitex-contrib/tracer-opentracing"
-	"github.com/spf13/viper"
+	"errors"
 	"tiktok/cmd/user/kitex_gen/userpart"
 	"tiktok/cmd/user/kitex_gen/userpart/userservice"
-	"time"
+	"tiktok/internal/errno"
 )
 
 var userClient userservice.Client
 
-func initUserRpc() {
-	c, err := userservice.NewClient(
-		viper.GetString("ServiceName"),
-		//client.WithMiddleware(middleware.CommonMiddleware),
-		//client.WithInstanceMW(middleware.ClientMiddleware),
-		client.WithMuxConnection(1),                       // mux
-		client.WithRPCTimeout(3*time.Second),              // rpc timeout
-		client.WithConnectTimeout(50*time.Millisecond),    // conn timeout
-		client.WithFailureRetry(retry.NewFailurePolicy()), // retry
-		client.WithSuite(trace.NewDefaultClientSuite()),   // tracer
-		client.WithResolver(r),                            // resolver
-	)
-	if err != nil {
-		panic(err)
-	}
-	userClient = c
-}
-
-func CreateUser(ctx context.Context, req *userpart.UserRegisterRequest) error {
-
+func Register(ctx context.Context, req *userpart.UserRegisterRequest) error {
 	resp, err := userClient.UserRegister(ctx, req)
 	if err != nil {
 		return err
 	}
+	if resp.StatusCode != 0 {
+		return errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+	}
 	return nil
+}
+
+func Login(ctx context.Context, req *userpart.UserLoginRequest) (*userpart.UserLoginResponse, error) {
+	resp, err := userClient.UserLogin(ctx, req)
+	if err != nil || resp.StatusCode != 0 {
+		return nil, errors.New("error")
+	}
+	return resp, nil
 }

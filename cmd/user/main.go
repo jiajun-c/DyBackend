@@ -2,13 +2,11 @@ package main
 
 import (
 	"log"
-	"tiktok/cmd/user/dal"
-	user_part "tiktok/cmd/user/kitex_gen/user_part/userservice"
+	userpart "tiktok/cmd/user/kitex_gen/userpart/userservice"
 )
 
 func main() {
-	dal.Init()
-	svr := user_part.NewServer(new(UserServiceImpl))
+	svr := userpart.NewServer(new(UserServiceImpl))
 
 	err := svr.Run()
 
