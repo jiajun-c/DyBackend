@@ -1,11 +1,12 @@
 package handlers
 
 import (
+	context2 "context"
 	"github.com/gin-gonic/gin"
 	"tiktok/cmd/api/rpc"
+	"tiktok/cmd/user/kitex_gen/userpart"
 	"tiktok/internal/code"
 	"tiktok/internal/errno"
-	"tiktok/kitex_gen/userpart"
 )
 
 type UserParam struct {
@@ -21,12 +22,13 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	resp, err := rpc.Login(ctx, &userpart.UserLoginRequest{
+	resp, err := rpc.Login(context2.Background(), &userpart.UserLoginRequest{
 		Username: loginVar.UserName,
 		Password: loginVar.PassWord,
 	})
 	if err != nil {
 		ctx.JSON(200, errno.AuthorizationFailedErr)
 	}
+	resp.UserId = 123
 	ctx.JSON(code.StatusOK, resp)
 }

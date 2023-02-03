@@ -64,9 +64,11 @@
 
 ## 4. 运行项目
 ### 1.环境
-暂时只依赖mysql
-
-数据库存放在云服务器上，配置文件中已经写出
+1. mysql 在云服务器部署
+2. etcd 
+```shell
+docker-compose up etcd -d 
+```
 
 ### 2. 微服务
 ```shell
@@ -75,4 +77,9 @@ sh build.sh
 sh output/bootstrap.sh
 ```
 
+### 3. api
+```shell
+cd cmd/api
+go run ./main.go
+```
 
