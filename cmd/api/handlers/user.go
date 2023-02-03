@@ -3,19 +3,20 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"tiktok/cmd/api/rpc"
-	"tiktok/cmd/user/kitex_gen/userpart"
 	"tiktok/internal/code"
 	"tiktok/internal/errno"
+	"tiktok/kitex_gen/userpart"
 )
 
 type UserParam struct {
-	UserName string `json:"username"`
-	PassWord string `json:"password"`
+	UserName string `form:"username"`
+	PassWord string `form:"password"`
 }
 
 func Login(ctx *gin.Context) {
 	var loginVar UserParam
-	if err := ctx.Bind(&loginVar); err != nil {
+	err := ctx.BindQuery(&loginVar)
+	if err != nil {
 		ctx.JSON(200, errno.ParamErr)
 		return
 	}

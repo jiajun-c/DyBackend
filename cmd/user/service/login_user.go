@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"tiktok/cmd/user/dal/db"
-	"tiktok/cmd/user/kitex_gen/userpart"
+	"tiktok/kitex_gen/userpart"
 )
 
 type LoginUserService struct {
@@ -14,6 +14,6 @@ func NewLoginUserService(ctx context.Context) *LoginUserService {
 	return &LoginUserService{ctx: ctx}
 }
 
-func (s *LoginUserService) LoginUser(req *userpart.UserRegisterRequest) bool {
+func (s *LoginUserService) LoginUser(req *userpart.UserLoginRequest) bool {
 	return db.CheckUser(s.ctx, req.Username, req.Password)
 }

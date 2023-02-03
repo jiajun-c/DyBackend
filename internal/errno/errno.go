@@ -10,6 +10,7 @@ const (
 	ParamErrCode               = 10002
 	UserAlreadyErrCode         = 10003
 	AuthorizationFailedErrCode = 10004
+	UserRegisterFailedErrCode  = 10005
 )
 
 var (
@@ -18,6 +19,7 @@ var (
 	ParamErr               = NewErrNo(ParamErrCode, "Wrong param")
 	UserAlreadyExistErr    = NewErrNo(UserAlreadyErrCode, "The User already exist")
 	AuthorizationFailedErr = NewErrNo(AuthorizationFailedErrCode, "Authorization failed")
+	UserRegisterFailedErr  = NewErrNo(UserRegisterFailedErrCode, "Register failed")
 )
 
 type ErrNo struct {

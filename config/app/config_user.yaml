@@ -4,3 +4,6 @@ db:
   port: 23306
   addr: 47.92.171.253
   database: tiktok
+
+etcd:
+  addr: "47.92.171.253:2379"

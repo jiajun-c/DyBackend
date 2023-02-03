@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 	"tiktok/cmd/user/dal/db"
-	"tiktok/cmd/user/kitex_gen/userpart"
+	"tiktok/kitex_gen/userpart"
 )
 
 type CreateUserService struct {
