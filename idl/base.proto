@@ -1,0 +1,8 @@
+syntax = "proto3";
+package base;
+option go_package = "base";
+
+message BaseResponse {
+  int32 status_code = 1; // 状态码，0-成功，其他值-失败
+  string status_msg = 2; // 返回状态描述
+}

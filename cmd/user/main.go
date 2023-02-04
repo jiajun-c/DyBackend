@@ -16,10 +16,6 @@ import (
 	"tiktok/internal/config"
 )
 
-func Init() {
-	dal.Init()
-}
-
 func main() {
 	config.Init("config_user.yaml")
 	dal.Init()
@@ -32,7 +28,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	Init()
 	svr := userservice.NewServer(new(UserServiceImpl),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: "user_part"}), // server name
 		server.WithServiceAddr(addr),                                       // address
