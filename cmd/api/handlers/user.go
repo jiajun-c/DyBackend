@@ -28,7 +28,26 @@ func Login(ctx *gin.Context) {
 	})
 	if err != nil {
 		ctx.JSON(200, errno.AuthorizationFailedErr)
+	} else {
+		ctx.JSON(code.StatusOK, resp)
 	}
-	resp.UserId = 123
-	ctx.JSON(code.StatusOK, resp)
+}
+
+func Register(ctx *gin.Context) {
+	var regVar UserParam
+	err := ctx.BindQuery(&regVar)
+	if err != nil {
+		ctx.JSON(200, errno.ParamErr)
+	}
+
+	resp, err := rpc.Register(context2.Background(), &userpart.UserRegisterRequest{
+		Username: regVar.UserName,
+		Password: regVar.PassWord,
+	})
+
+	if err != nil {
+		ctx.JSON(200, errno.UserRegisterFailedErr)
+	} else {
+		ctx.JSON(code.StatusOK, resp)
+	}
 }

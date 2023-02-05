@@ -8,7 +8,7 @@ import (
 func UserRouter(router *gin.Engine) {
 	userRouter := router.Group("/user")
 	{
-		userRouter.POST("/register")
+		userRouter.POST("/register", handlers.Register)
 		userRouter.POST("/login", handlers.Login)
 	}
 }

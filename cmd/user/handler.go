@@ -12,16 +12,6 @@ type UserServiceImpl struct{}
 
 // UserLogin implements the UserServiceImpl interface.
 func (s *UserServiceImpl) UserLogin(ctx context.Context, req *userpart.UserLoginRequest) (resp *userpart.UserLoginResponse, err error) {
-	//logrus.Info("The user login")
-	//resp = new(userpart.UserLoginResponse)
-	//resp.StatusCode = 0
-	//success := service.NewLoginUserService(ctx).LoginUser(req)
-	//if !success {
-	//	resp.StatusCode = 1
-	//	return resp, errno.AuthorizationFailedErr
-	//}
-	//logrus.Info(resp.StatusCode)
-	//return resp, nil
 	resp = &userpart.UserLoginResponse{
 		StatusCode: 0,
 		StatusMsg:  "success to login",
@@ -37,10 +27,16 @@ func (s *UserServiceImpl) UserLogin(ctx context.Context, req *userpart.UserLogin
 
 // UserRegister implements the UserServiceImpl interface.
 func (s *UserServiceImpl) UserRegister(ctx context.Context, req *userpart.UserRegisterRequest) (resp *userpart.UserRegisterResponse, err error) {
-	resp = new(userpart.UserRegisterResponse)
+	resp = &userpart.UserRegisterResponse{
+		StatusCode: 0,
+		StatusMsg:  "success to register",
+		UserId:     0,
+		Token:      "",
+	}
 	err = service.NewCreateUserService(ctx).CreateUser(req)
 	if err != nil {
 		resp.StatusCode = 1
+		resp.StatusMsg = "register failed"
 		err = errno.UserRegisterFailedErr
 		return
 	}

@@ -11,7 +11,6 @@ import (
 	"github.com/spf13/viper"
 	"tiktok/cmd/user/kitex_gen/userpart"
 	"tiktok/cmd/user/kitex_gen/userpart/userservice"
-	"tiktok/internal/errno"
 	"time"
 )
 
@@ -39,15 +38,12 @@ func initUserRPC() {
 	userClient = c
 }
 
-func Register(ctx context.Context, req *userpart.UserRegisterRequest) error {
+func Register(ctx context.Context, req *userpart.UserRegisterRequest) (*userpart.UserRegisterResponse, error) {
 	resp, err := userClient.UserRegister(ctx, req)
-	if err != nil {
-		return err
+	if err != nil || resp.StatusCode != 0 {
+		return resp, err
 	}
-	if resp.StatusCode != 0 {
-		return errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	return nil
+	return resp, nil
 }
 
 func Login(ctx context.Context, req *userpart.UserLoginRequest) (*userpart.UserLoginResponse, error) {
