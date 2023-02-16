@@ -67,7 +67,7 @@
 1. mysql 在云服务器部署
 2. etcd 
 ```shell
-docker-compose up etcd -d 
+docker-compose up -d etcd
 ```
 
 ### 2. 微服务
