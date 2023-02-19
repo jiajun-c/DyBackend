@@ -1,0 +1,9 @@
+test: test
+
+db:
+  port: 23306
+  addr: 47.92.171.253
+  database: tiktok
+
+etcd:
+  addr: "127.0.0.1:2379"
