@@ -8,7 +8,7 @@ import (
 	userdb "tiktok/cmd/user/dal/db"
 
 	// videodb "tiktok/cmd/video/dal/db"
-	// relationdb "tiktok/cmd/relation/dal/db"
+	relationdb "tiktok/cmd/relation/dal/db"
 	"tiktok/kitex_gen/commentpart"
 )
 
@@ -51,12 +51,12 @@ func (s *CommentListService) CommentList(req *commentpart.CommentListRequest) ([
 		userMap[int64(user.ID)] = user
 	}
 
-	var relationMap map[int64]*relationdb.Relation
+	var relationMap map[int64]*relationdb.Following
 	if req.UserId == -1 {
 		relationMap = nil
 	} else {
 		// 获取一系列关注信息
-		relationMap, err = relationdb.QueryRelationByIds(s.ctx, req.UserId, userIds)
+		relationMap, err = relationdb.QueryFollowingRelation(s.ctx, req.UserId, userIds)
 		if err != nil {
 			return nil, err
 		}

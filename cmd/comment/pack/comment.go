@@ -2,9 +2,9 @@ package pack
 
 import (
 	"tiktok/cmd/comment/dal/db"
+	relationdb "tiktok/cmd/relation/dal/db"
 	userdb "tiktok/cmd/user/dal/db"
 	"tiktok/kitex_gen/commentpart"
-	// relationdb "tiktok/cmd/relation/dal/db"
 )
 
 // 打包成可以直接返回的评论信息
@@ -24,7 +24,7 @@ func CommentInfo(commentRaw *db.Comment, user *userdb.User) *commentpart.Comment
 	return comment
 }
 
-func CommentList(currentId int64, comments []*db.Comment, userMap map[int64]*userdb.User, relationMap map[int64]*relationdb.Relation) []*commentpart.Comment {
+func CommentList(currentId int64, comments []*db.Comment, userMap map[int64]*userdb.User, relationMap map[int64]*relationdb.Following) []*commentpart.Comment {
 	commentList := make([]*commentpart.Comment, 0)
 	for _, commentRaw := range comments {
 		commentUser, ok := userMap[commentRaw.UserId]
