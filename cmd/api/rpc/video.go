@@ -3,8 +3,8 @@ package rpc
 import (
 	"context"
 	"errors"
-	"tiktok/cmd/user/kitex_gen/userpart"
-	"tiktok/cmd/user/kitex_gen/userpart/userservice"
+	"tiktok/cmd/video/kitex_gen/videopart"
+	"tiktok/cmd/video/kitex_gen/videopart/videoservice"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -15,16 +15,16 @@ import (
 	"github.com/spf13/viper"
 )
 
-var userClient userservice.Client
+var videoClient videoservice.Client
 
-func initUserRPC() {
+func initVideoRPC() {
 	r, err := etcd.NewEtcdResolver([]string{viper.GetString("etcd.addr")})
 	logrus.Info("The etcd addr: ", viper.GetString("etcd.addr"))
 	if err != nil {
 		panic(err)
 	}
-	c, err := userservice.NewClient(
-		"user_part",
+	c, err := videoservice.NewClient(
+		"video_part",
 		client.WithMuxConnection(1),                       // mux
 		client.WithRPCTimeout(300*time.Second),            // rpc timeout
 		client.WithConnectTimeout(50000*time.Millisecond), // conn timeout
@@ -36,29 +36,27 @@ func initUserRPC() {
 	if err != nil {
 		panic(err)
 	}
-	userClient = c
+	videoClient = c
 }
 
-func Register(ctx context.Context, req *userpart.UserRegisterRequest) (*userpart.UserRegisterResponse, error) {
-	resp, err := userClient.UserRegister(ctx, req)
+func PublishAction(ctx context.Context, req *videopart.DoPublishActionRequest) (*videopart.DoPublishActionResponse, error) {
+	resp, err := videoClient.DoPublishAction(ctx, req)
 	if err != nil || resp.StatusCode != 0 {
 		return resp, errors.New("error")
 	}
 	return resp, nil
 }
 
-func Login(ctx context.Context, req *userpart.UserLoginRequest) (*userpart.UserLoginResponse, error) {
-	resp, err := userClient.UserLogin(ctx, req)
-	logrus.Info(resp)
+func PublishList(ctx context.Context, req *videopart.GetPublishListRequest) (*videopart.GetPublishListResponse, error) {
+	resp, err := videoClient.GetPublishList(ctx, req)
 	if err != nil || resp.StatusCode != 0 {
 		return resp, errors.New("error")
 	}
 	return resp, nil
 }
 
-func Info(ctx context.Context, req *userpart.UserInfoRequest) (*userpart.UserInfoResponse, error) {
-	resp, err := userClient.UserInfo(ctx, req)
-	logrus.Info(resp)
+func Feed(ctx context.Context, req *videopart.FeedRequest) (*videopart.FeedResponse, error) {
+	resp, err := videoClient.Feed(ctx, req)
 	if err != nil || resp.StatusCode != 0 {
 		return resp, errors.New("error")
 	}
