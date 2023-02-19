@@ -3,10 +3,8 @@ module tiktok
 go 1.18
 
 require (
-	github.com/cloudwego/fastpb v0.0.3
-	github.com/cloudwego/kitex v0.4.4
-	github.com/gin-gonic/gin v1.8.2
-	github.com/kitex-contrib/registry-etcd v0.1.0
+	github.com/cloudwego/kitex v0.3.4
+	github.com/gin-gonic/gin v1.7.7
 	github.com/kitex-contrib/tracer-opentracing v0.0.2
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/sirupsen/logrus v1.7.0
@@ -75,7 +73,6 @@ require (
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.3.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
-	google.golang.org/genproto v0.0.0-20221227171554-f9683d7f8bef // indirect
 	google.golang.org/grpc v1.52.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

@@ -1,0 +1,66 @@
+syntax = "proto3";
+package relation;
+option go_package = "relationpart";
+
+import "base.proto";
+
+message User {
+    int64 id = 1; // 用户id
+    string name = 2; // 用户名称
+    int64 follow_count = 3; // 关注总数
+    int64 follower_count = 4; // 粉丝总数
+    bool is_follow = 5; // true-已关注，false-未关注
+}
+
+message douyin_relation_action_request {
+    int64 user_id = 1; // 用户id
+    int64 to_user_id = 2; // 对方用户id
+    int32 action_type = 3; // 1-关注，2-取消关注
+}
+
+message douyin_relation_action_response {
+    base.BaseResponse base_resp = 1;
+}
+
+message douyin_relation_follow_list_request {
+    int64 user_id = 1; // 查询用户id
+    int64 action_user_id = 2; // 操作用户id
+}
+
+message douyin_relation_follow_list_response {
+    base.BaseResponse base_resp = 1;
+    repeated User user_list = 2; // 用户信息列表
+}
+
+message douyin_relation_follower_list_request {
+    int64 user_id = 1; // 查询用户id
+    int64 action_user_id = 2; // 操作用户id
+}
+
+message douyin_relation_follower_list_response {
+    base.BaseResponse base_resp = 1;
+    repeated User user_list = 2; // 用户列表
+}
+
+message FriendUser {
+    User   user_info = 1;
+    string message = 2; // 和该好友的最新聊天消息
+    int64 msgType = 3; // message消息的类型，0 => 当前请求用户接收的消息， 1 => 当前请求用户发送的消息
+}
+
+message douyin_relation_friend_list_request {
+    int64 user_id = 1; // 用户id
+    int64 action_user_id = 2; // 操作用户id
+}
+
+message douyin_relation_friend_list_response {
+    base.BaseResponse base_resp = 1;
+    repeated FriendUser user_list = 2; // 用户列表
+}
+
+service RelationService {
+    rpc RelationAction(douyin_relation_action_request) returns(douyin_relation_action_response) {}
+    rpc GetFollowList(douyin_relation_follow_list_request) returns(douyin_relation_follow_list_response) {}
+    rpc GetFollowerList(douyin_relation_follower_list_request) returns(douyin_relation_follower_list_response) {}
+    rpc GetFriendList(douyin_relation_friend_list_request) returns (douyin_relation_friend_list_response) {}
+}
