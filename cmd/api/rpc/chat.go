@@ -3,8 +3,7 @@ package rpc
 import (
 	"context"
 	"errors"
-	"tiktok/cmd/user/kitex_gen/userpart"
-	"tiktok/cmd/user/kitex_gen/userpart/userservice"
+	"tiktok/cmd/chat/kitex_gen/chatpart/chatservice"
 	"time"
 
 	"github.com/cloudwego/kitex/client"
@@ -15,16 +14,16 @@ import (
 	"github.com/spf13/viper"
 )
 
-var userClient userservice.Client
+var chatClient Chatservice.Client
 
-func initUserRPC() {
+func initChatRPC() {
 	r, err := etcd.NewEtcdResolver([]string{viper.GetString("etcd.addr")})
 	logrus.Info("The etcd addr: ", viper.GetString("etcd.addr"))
 	if err != nil {
 		panic(err)
 	}
-	c, err := userservice.NewClient(
-		"user_part",
+	c, err := chatservice.NewClient(
+		"chat_part",
 		client.WithMuxConnection(1),                       // mux
 		client.WithRPCTimeout(300*time.Second),            // rpc timeout
 		client.WithConnectTimeout(50000*time.Millisecond), // conn timeout
@@ -36,29 +35,19 @@ func initUserRPC() {
 	if err != nil {
 		panic(err)
 	}
-	userClient = c
+	chatClient = c
 }
 
-func Register(ctx context.Context, req *userpart.UserRegisterRequest) (*userpart.UserRegisterResponse, error) {
-	resp, err := userClient.UserRegister(ctx, req)
+func MessageChat(ctx context.Context, req *chatpart.douyin_message_chat_request) (*chatpart.douyin_message_chat_response, error) {
+	resp, err := chatClient.GetChatHistory(ctx, req)
 	if err != nil || resp.StatusCode != 0 {
 		return resp, errors.New("error")
 	}
 	return resp, nil
 }
 
-func Login(ctx context.Context, req *userpart.UserLoginRequest) (*userpart.UserLoginResponse, error) {
-	resp, err := userClient.UserLogin(ctx, req)
-	logrus.Info(resp)
-	if err != nil || resp.StatusCode != 0 {
-		return resp, errors.New("error")
-	}
-	return resp, nil
-}
-
-func Info(ctx context.Context, req *userpart.UserInfoRequest) (*userpart.UserInfoResponse, error) {
-	resp, err := userClient.UserInfo(ctx, req)
-	logrus.Info(resp)
+func MessageAction(ctx context.Context, req *chatpart.douyin_message_action_request) (*chatpart.douyin_message_action_response, error) {
+	resp, err := chatClient.DoMessageAction(ctx, req)
 	if err != nil || resp.StatusCode != 0 {
 		return resp, errors.New("error")
 	}

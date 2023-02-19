@@ -1,8 +1,9 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"tiktok/cmd/api/handlers"
+
+	"github.com/gin-gonic/gin"
 )
 
 func UserRouter(router *gin.Engine) {
@@ -10,5 +11,6 @@ func UserRouter(router *gin.Engine) {
 	{
 		userRouter.POST("/register", handlers.Register)
 		userRouter.POST("/login", handlers.Login)
+		userRouter.GET("/", handlers.Info)
 	}
 }

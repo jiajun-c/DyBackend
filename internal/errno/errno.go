@@ -5,21 +5,49 @@ package errno
 import "fmt"
 
 const (
-	SuccessCode                = 0
-	ServiceErrCode             = 10001
-	ParamErrCode               = 10002
-	UserAlreadyErrCode         = 10003
-	AuthorizationFailedErrCode = 10004
-	UserRegisterFailedErrCode  = 10005
+	SuccessCode                 = 0
+	ServiceErrCode              = 10001
+	ParamErrCode                = 10002
+	UserAlreadyErrCode          = 10003
+	AuthorizationFailedErrCode  = 10004
+	UserRegisterFailedErrCode   = 10005
+	UserInfoFailedErrCode       = 10006
+	PublishActionFailedErrCode  = 10007
+	PublishListFailedErrCode    = 10008
+	FeedFailedErrCode           = 10009
+	RelationActionFailedErrCode = 10010
+	FollowListFailedErrCode     = 10011
+	FollowerListFailedErrCode   = 10012
+	FriendListFailedErrCode     = 10013
+	MessageChatFailedErrCode    = 10014
+	MessageActionFailedErrCode  = 10015
+	CommentActionFailedErrCode  = 10016
+	CommentListFailedErrCode    = 10017
+	FavoriteActionFailedErrCode = 10018
+	FavoriteListFailedErrCode   = 10019
 )
 
 var (
-	Success                = NewErrNo(SuccessCode, "Success")
-	ServiceErr             = NewErrNo(ServiceErrCode, "Service is unable to start")
-	ParamErr               = NewErrNo(ParamErrCode, "Wrong param")
-	UserAlreadyExistErr    = NewErrNo(UserAlreadyErrCode, "The User already exist")
-	AuthorizationFailedErr = NewErrNo(AuthorizationFailedErrCode, "Authorization failed")
-	UserRegisterFailedErr  = NewErrNo(UserRegisterFailedErrCode, "Register failed")
+	Success                 = NewErrNo(SuccessCode, "Success")
+	ServiceErr              = NewErrNo(ServiceErrCode, "Service is unable to start")
+	ParamErr                = NewErrNo(ParamErrCode, "Wrong param")
+	UserAlreadyExistErr     = NewErrNo(UserAlreadyErrCode, "The User already exist")
+	AuthorizationFailedErr  = NewErrNo(AuthorizationFailedErrCode, "Authorization failed")
+	UserRegisterFailedErr   = NewErrNo(UserRegisterFailedErrCode, "Register failed")
+	UserInfoFailedErr       = NewErrNo(UserInfoFailedErrCode, "UserInfo failed")
+	PublishActionFailedErr  = NewErrNo(PublishActionFailedErrCode, "Publish action failed")
+	PublishListFailedErr    = NewErrNo(PublishListFailedErrCode, "Publish list failed")
+	FeedFailedErr           = NewErrNo(FeedFailedErrCode, "Feed failed")
+	RelationActionFailedErr = NewErrNo(RelationActionFailedErrCode, "Relation action failed")
+	FollowListFailedErr     = NewErrNo(FollowListFailedErrCode, "Follow list failed")
+	FollowerListFailedErr   = NewErrNo(FollowerListFailedErrCode, "Follower list failed")
+	FriendListFailedErr     = NewErrNo(FriendListFailedErrCode, "Friend list failed")
+	MessageChatFailedErr    = NewErrNo(MessageChatFailedErrCode, "Message chat failed")
+	MessageActionFailedErr  = NewErrNo(MessageActionFailedErrCode, "Message action failed")
+	CommentActionFailedErr  = NewErrNo(CommentActionFailedErrCode, "Comment action failed")
+	CommentListFailedErr    = NewErrNo(CommentListFailedErrCode, "Comment list failed")
+	FavoriteActionFailedErr = NewErrNo(FavoriteActionFailedErrCode, "Favorite action failed")
+	FavoriteListFailedErr   = NewErrNo(FavoriteListFailedErrCode, "Favorite list failed")
 )
 
 type ErrNo struct {
