@@ -3,9 +3,12 @@ package service
 import (
 	"context"
 	"errors"
+	"strconv"
 	chatDB "tiktok/cmd/chat/dal/db"
+	"tiktok/cmd/relation/config"
 	"tiktok/cmd/relation/dal/db"
 	"tiktok/cmd/relation/pack"
+	"tiktok/cmd/relation/redis"
 	"tiktok/kitex_gen/relationpart"
 )
 
@@ -22,7 +25,7 @@ func (s *FriendListService) FriendList(req *relationpart.DouyinRelationFriendLis
 	if currentID != req.UserId {
 		return nil, errors.New("No access to other user's friend list.")
 	}
-
+	friendIDs := make([]int64, 0)
 	// TODO: userDB: check UserID existence
 	// users, err := db.QueryUserByIds(s.ctx, []int64{req.ToUserId})
 	// if err != nil {
@@ -32,15 +35,31 @@ func (s *FriendListService) FriendList(req *relationpart.DouyinRelationFriendLis
 	// 	return nil, errors.New("UserId not exist")
 	// }
 
-	friendLst, err := db.GetFriendByUserID(s.ctx, req.UserId)
-	if err != nil {
-		return nil, err
+	userIDStr := strconv.Itoa(int(req.UserId))
+	if cnt, _ := redis.RDBFriend.SCard(userIDStr).Result(); cnt != 0 {
+		redis.RDBFriend.Expire(userIDStr, config.ExpireTime)
+		friendIDStr, _ := redis.RDBFriend.SMembers(userIDStr).Result()
+		for _, str := range friendIDStr {
+			id, _ := strconv.Atoi(str)
+			if id == -1 {
+				continue
+			}
+			friendIDs = append(friendIDs, int64(id))
+		}
+
+	} else {
+
+		friendLst, err := db.GetFriendByUserID(s.ctx, req.UserId)
+		if err != nil {
+			return nil, err
+		}
+
+		for _, friend := range friendLst {
+			friendIDs = append(friendIDs, friend.FollowerID)
+		}
+		go redis.LoadFriendList(int(req.UserId), friendIDs)
 	}
 
-	friendIDs := make([]int64, 0)
-	for _, friend := range friendLst {
-		friendIDs = append(friendIDs, friend.FollowerID)
-	}
 	// TODO: userDB：获取朋友信息
 	users, err := db.QueryUserByIds(s.ctx, followerIDs)
 	if err != nil {

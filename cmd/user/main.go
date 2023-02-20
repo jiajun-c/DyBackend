@@ -1,6 +1,12 @@
 package main
 
 import (
+	"net"
+	"tiktok/cmd/user/dal"
+	"tiktok/cmd/user/kitex_gen/userpart/userservice"
+	"tiktok/internal/bound"
+	"tiktok/internal/config"
+
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -9,11 +15,6 @@ import (
 	trace "github.com/kitex-contrib/tracer-opentracing"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
-	"net"
-	"tiktok/cmd/user/dal"
-	"tiktok/cmd/user/kitex_gen/userpart/userservice"
-	"tiktok/internal/bound"
-	"tiktok/internal/config"
 )
 
 func main() {
