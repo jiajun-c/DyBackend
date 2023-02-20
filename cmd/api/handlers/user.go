@@ -6,6 +6,8 @@ import (
 	"tiktok/cmd/user/kitex_gen/userpart"
 	"tiktok/internal/code"
 	"tiktok/internal/errno"
+	"tiktok/cmd/api/db"
+	"tiktok/cmd/api/auth"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,8 +37,17 @@ func Login(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(200, errno.AuthorizationFailedErr)
 	} else {
+		u, err := db.GetUserByUsername(loginVar.Username)
+		if err != nil {
+			ctx.JSON(200, errno.ParamErr)
+			return
+		}
+
+		resp.UserId = u.Uid
+		resp.Token = auth.GenerateToken(loginVar.Username)
 		ctx.JSON(code.StatusOK, resp)
 	}
+	return
 }
 
 func Register(ctx *gin.Context) {
@@ -54,8 +65,17 @@ func Register(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(200, errno.UserRegisterFailedErr)
 	} else {
+		u, err := db.GetUserByUsername(loginVar.Username)
+		if err != nil {
+			ctx.JSON(200, errno.ParamErr)
+			return
+		}
+		
+		resp.UserId = u.Uid
+		resp.Token = auth.GenerateToken(loginVar.Username)
 		ctx.JSON(code.StatusOK, resp)
 	}
+	return
 }
 
 func Info(ctx *gin.Context) {
@@ -65,9 +85,13 @@ func Info(ctx *gin.Context) {
 		ctx.JSON(200, errno.ParamErr)
 	}
 
+	if !auth.Auth(usrInfoReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
 	resp, err := rpc.Info(context2.Background(), &userpart.UserInfoRequest{
 		User_id: usrInfoReq.User_id,
-		Token:   usrInfoReq.Token,
 	})
 
 	if err != nil {

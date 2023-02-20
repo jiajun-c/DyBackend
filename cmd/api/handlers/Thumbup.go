@@ -5,6 +5,7 @@ import (
 	"tiktok/cmd/api/rpc"
 	"tiktok/internal/code"
 	"tiktok/internal/errno"
+	"tiktok/cmd/api/auth"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,8 +42,12 @@ func CommentAction(ctx *gin.Context) {
 		return
 	}
 
+	if !auth.Auth(commActionReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
 	resp, err := rpc.CommentAction(context2.Background(), &thumbuppart.comment_action_request{
-		Token:        commActionReq.Token,
 		Video_id:     commActionReq.VideoId,
 		Action_type:  commActionReq.ActionType,
 		Comment_text: commActionReq.CommentText,
@@ -63,8 +68,12 @@ func CommentList(ctx *gin.Context) {
 		return
 	}
 
+	if !auth.Auth(commListReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
 	resp, err := rpc.CommentList(context2.Background(), &thumbuppart.comment_list_request{
-		Token:    commListReq.Token,
 		Video_id: commListReq.VideoId,
 	})
 	if err != nil {
@@ -82,8 +91,12 @@ func FavoriteAction(ctx *gin.Context) {
 		return
 	}
 
-	resp, err := rpc.Login(context2.Background(), &thumbuppart.favorite_action_request{
-		Token:       favActionReq.Token,
+	if !auth.Auth(favActionReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
+	resp, err := rpc.FavoriteAction(context2.Background(), &thumbuppart.favorite_action_request{
 		Video_id:    favActionReq.VideoId,
 		Action_type: favActionReq.ActionType,
 	})
@@ -102,8 +115,12 @@ func FavoriteList(ctx *gin.Context) {
 		return
 	}
 
-	resp, err := rpc.Login(context2.Background(), &thumbuppart.favorite_list_request{
-		Token:   favListReq.Token,
+	if !auth.Auth(favListReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
+	resp, err := rpc.FavoriteList(context2.Background(), &thumbuppart.favorite_list_request{
 		User_id: favListReq.UserId,
 	})
 	if err != nil {
