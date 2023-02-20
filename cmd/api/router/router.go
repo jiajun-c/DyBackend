@@ -9,4 +9,5 @@ func Router(router *gin.Engine) {
 	ThumbupRouter(router)
 	CommentRouter(router)
 	ChatRouter(router)
+	FavoriteRouter(router)
 }
