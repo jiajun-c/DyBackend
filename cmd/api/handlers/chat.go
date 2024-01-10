@@ -5,58 +5,74 @@ import (
 	"tiktok/cmd/api/rpc"
 	"tiktok/internal/code"
 	"tiktok/internal/errno"
+	"tiktok/cmd/api/auth"
 
 	"github.com/gin-gonic/gin"
 )
 
-type MsgChatReq struct {
-	FromUserId int64 `form:"from_user_id"`
+type MsgActionRequest struct {
+	Token		string `form:"token"`
+	ToUserID 	string `form:"to_user_id"`
+	ActionType  int32  `form:"action_type"`
+	Content		string `form:"content"`
+}
+
+type MsgChatRequest struct { 
+	Token	   string `form:"token"`
+	PreMsgTime int64 `form:"pre_msg_time"`
 	ToUserId   int64 `form:"to_user_id"`
 }
 
-type MsgActionReq struct {
-	FromUserId int64  `form:"from_user_id"`
-	ToUserId   int64  `form:"to_user_id"`
-	ActionType int32  `form:"action_type"`
-	Content    string `form:"content"`
+
+func MessageAction(ctx *gin.Context) {
+	var msgAcReq MsgActionRequest
+
+	err := ctx.BindQuery(&msgAcReq)
+	if err!= nil {
+		ctx.JSON(200, errno.ParamErr)
+		return
+	}
+
+	if !auth.Auth(msgAcReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
+	response, err := rpc.MessageAction(context2.Background(), &chatpart.douyin_message_action_request {
+		To_user_id: msgAcReq.ToUserID,
+		Action_type: msgAcReq.ActionType,
+		Content: msgAcReq.Content,
+	})
+	if err!= nil {
+		ctx.JSON(200, errno.SystemError)
+        return
+	} else {
+		ctx.JSON(code.StatusOK, response)
+	}
 }
 
 func MessageChat(ctx *gin.Context) {
-	var msgChatReq MsgChatReq
-	err := ctx.BindQuery(&msgChatReq)
-	if err != nil {
+	var msgChReq MsgChatRequest
+
+	err := ctx.BindQuery(&msgChReq)
+	if err!= nil {
 		ctx.JSON(200, errno.ParamErr)
 		return
 	}
 
-	resp, err := rpc.MessageChat(context2.Background(), &chatpart.douyin_message_chat_request{
-		From_user_id: msgChatReq.FromUserId,
-		To_user_id:   msgChatReq.ToUserId,
-	})
-	if err != nil {
-		ctx.JSON(200, errno.MessageChatFailedErr)
-	} else {
-		ctx.JSON(code.StatusOK, resp)
-	}
-}
-
-func MessageAction(ctx *gin.Context) {
-	var msgActionReq MsgActionReq
-	err := ctx.BindQuery(&msgActionReq)
-	if err != nil {
-		ctx.JSON(200, errno.ParamErr)
+	if !auth.Auth(msgChReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
 		return
 	}
 
-	resp, err := rpc.MessageAction(context2.Background(), &chatpart.douyin_message_action_request{
-		From_user_id: msgActionReq.FromUserId,
-		To_user_id:   msgActionReq.ToUserId,
-		Action_type:  msgActionReq.ActionType,
-		Content:      msgActionReq.Content,
+	response, err := rpc.MessageChat(context2.Background(), &chatpart.douyin_message_chat_request {
+		Pre_msg_time: msgChReq.PreMsgTime,
+		To_user_id: msgChReq.ToUserID,
 	})
-	if err != nil {
-		ctx.JSON(200, errno.MessageActionFailedErr)
+	if err!= nil {
+		ctx.JSON(200, errno.SystemError)
+        return
 	} else {
-		ctx.JSON(code.StatusOK, resp)
+		ctx.JSON(code.StatusOK, response)
 	}
 }

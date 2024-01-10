@@ -3,20 +3,23 @@ package handlers
 import (
 	context2 "context"
 	"tiktok/cmd/api/rpc"
-	"tiktok/cmd/user/kitex_gen/videopart"
+	"tiktok/cmd/video/kitex_gen/videopart"
 	"tiktok/internal/code"
 	"tiktok/internal/errno"
+	"tiktok/cmd/api/auth"
 
 	"github.com/gin-gonic/gin"
 )
 
 type PublishActionReq struct {
+	Token string `form:"token`
 	Data  []byte `form:"data"`
 	Title string `form:"title"`
 }
 
 type PublishListReq struct {
 	UserId int64 `form:"user_id"`
+	Token       string `form:"token"`
 }
 
 type FeedReq struct {
@@ -29,6 +32,11 @@ func PublishAction(ctx *gin.Context) {
 	err := ctx.BindQuery(&pubAcReq)
 	if err != nil {
 		ctx.JSON(200, errno.ParamErr)
+		return
+	}
+
+	if !auth.Auth(pubAcReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
 		return
 	}
 
@@ -51,6 +59,11 @@ func PublishList(ctx *gin.Context) {
 		return
 	}
 
+	if !auth.Auth(pubListReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
 	resp, err := rpc.PublishList(context2.Background(), &videopart.GetPublishListRequest{
 		User_id: pubListReq.UserId,
 	})
@@ -69,9 +82,13 @@ func Feed(ctx *gin.Context) {
 		return
 	}
 
+	if !auth.Auth(feedReq.Token) {
+		ctx.JSON(200, errno.TokenFailedErr)
+		return
+	}
+
 	resp, err := rpc.Feed(context2.Background(), &videopart.Feed{
 		Latest_time: feedReq.Latest_time,
-		Token:       feedReq.Token,
 	})
 	if err != nil {
 		ctx.JSON(200, errno.PublishListFailedErr)
